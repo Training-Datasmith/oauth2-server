@@ -33,7 +33,7 @@ class OAuthServerException extends Exception
     /**
      * Throw a new exception.
      */
-    final public function __construct(string $message, int $code, private string $errorType, private int $httpStatusCode = 400, private ?string $hint = null, private ?string $redirectUri = null, ?Throwable $previous = null)
+    final public function __construct(string $message, int $code, private readonly string $errorType, private readonly int $httpStatusCode = 400, private readonly ?string $hint = null, private ?string $redirectUri = null, ?Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
         $this->payload = [
@@ -92,7 +92,7 @@ class OAuthServerException extends Exception
     {
         $errorMessage = 'The request is missing a required parameter, includes an invalid parameter value, ' .
             'includes a parameter more than once, or is otherwise malformed.';
-        $hint = ($hint === null) ? sprintf('Check the `%s` parameter', $parameter) : $hint;
+        $hint ??= sprintf('Check the `%s` parameter', $parameter);
 
         return new static($errorMessage, 3, 'invalid_request', 400, $hint, null, $previous);
     }
@@ -204,8 +204,6 @@ class OAuthServerException extends Exception
      * Expired token error.
      *
      * @param Throwable $previous Previous exception
-     *
-     * @return static
      */
     public static function expiredToken(?string $hint = null, ?Throwable $previous = null): static
     {
@@ -233,8 +231,6 @@ class OAuthServerException extends Exception
     /**
      * Slow down error used with the Device Authorization Grant.
      *
-     *
-     * @return static
      */
     public static function slowDown(string $hint = '', ?Throwable $previous = null): static
     {
@@ -317,7 +313,7 @@ class OAuthServerException extends Exception
         // include the "WWW-Authenticate" response header field
         // matching the authentication scheme used by the client.
         if ($this->errorType === 'invalid_client' && $this->requestHasAuthorizationHeader()) {
-            $authScheme = str_starts_with($this->serverRequest->getHeader('Authorization')[0], 'Bearer') ? 'Bearer' : 'Basic';
+            $authScheme = str_starts_with((string) $this->serverRequest->getHeader('Authorization')[0], 'Bearer') ? 'Bearer' : 'Basic';
 
             $headers['WWW-Authenticate'] = $authScheme . ' realm="OAuth"';
         }

@@ -22,7 +22,7 @@ class RequestAccessTokenEvent extends RequestEvent
         string $name,
         ServerRequestInterface $request,
         #[SensitiveParameter]
-        private AccessTokenEntityInterface $accessToken
+        private readonly AccessTokenEntityInterface $accessToken
     ) {
         parent::__construct($name, $request);
     }

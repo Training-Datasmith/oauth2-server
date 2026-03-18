@@ -20,10 +20,10 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class ResourceServer
 {
-    private CryptKeyInterface $publicKey;
+    private readonly CryptKeyInterface $publicKey;
 
     public function __construct(
-        private AccessTokenRepositoryInterface $accessTokenRepository,
+        private readonly AccessTokenRepositoryInterface $accessTokenRepository,
         CryptKeyInterface|string $publicKey,
         private ?AuthorizationValidatorInterface $authorizationValidator = null
     ) {

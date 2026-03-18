@@ -62,7 +62,7 @@ class RedirectUriValidator implements RedirectUriValidatorInterface
     {
         try {
             $uri = Uri::new($redirectUri);
-        } catch (SyntaxError $e) {
+        } catch (SyntaxError) {
             return false;
         }
 

@@ -19,7 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class ResourceServerMiddleware
 {
-    public function __construct(private ResourceServer $server)
+    public function __construct(private readonly ResourceServer $server)
     {
     }
 

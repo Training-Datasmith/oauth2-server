@@ -49,8 +49,6 @@ class AuthorizationServer implements EmitterAwareInterface
 
     protected ResponseTypeInterface $responseType;
 
-    private string|Key $encryptionKey;
-
     private string $defaultScope = '';
 
     private bool $revokeRefreshTokens = true;
@@ -65,7 +63,7 @@ class AuthorizationServer implements EmitterAwareInterface
         #[SensitiveParameter]
         CryptKeyInterface|string $privateKey,
         #[SensitiveParameter]
-        Key|string $encryptionKey,
+        private string|Key $encryptionKey,
         ResponseTypeInterface|null $responseType = null
     ) {
         if ($privateKey instanceof CryptKeyInterface === false) {
@@ -73,7 +71,6 @@ class AuthorizationServer implements EmitterAwareInterface
         }
 
         $this->privateKey = $privateKey;
-        $this->encryptionKey = $encryptionKey;
 
         if ($responseType === null) {
             $responseType = new BearerTokenResponse();

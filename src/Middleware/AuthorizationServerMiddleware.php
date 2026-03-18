@@ -19,7 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class AuthorizationServerMiddleware
 {
-    public function __construct(private AuthorizationServer $server)
+    public function __construct(private readonly AuthorizationServer $server)
     {
     }
 

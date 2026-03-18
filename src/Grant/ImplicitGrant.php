@@ -30,7 +30,7 @@ use function time;
 
 class ImplicitGrant extends AbstractAuthorizeGrant
 {
-    public function __construct(private DateInterval $accessTokenTTL, private string $queryDelimiter = '#')
+    public function __construct(private readonly DateInterval $accessTokenTTL, private readonly string $queryDelimiter = '#')
     {
     }
 

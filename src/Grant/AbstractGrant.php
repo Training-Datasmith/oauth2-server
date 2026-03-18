@@ -286,7 +286,7 @@ abstract class AbstractGrant implements GrantTypeInterface
      */
     private function convertScopesQueryStringToArray(string $scopes): array
     {
-        return array_filter(explode(self::SCOPE_DELIMITER_STRING, trim($scopes)), static fn ($scope) => $scope !== '');
+        return array_filter(explode(self::SCOPE_DELIMITER_STRING, trim($scopes)), static fn ($scope): bool => $scope !== '');
     }
 
     /**
@@ -347,11 +347,11 @@ abstract class AbstractGrant implements GrantTypeInterface
         }
 
         $header = $request->getHeader('Authorization')[0];
-        if (stripos($header, 'Basic ') !== 0) {
+        if (stripos((string) $header, 'Basic ') !== 0) {
             return [null, null];
         }
 
-        $decoded = base64_decode(substr($header, 6), true);
+        $decoded = base64_decode(substr((string) $header, 6), true);
 
         if ($decoded === false) {
             return [null, null];

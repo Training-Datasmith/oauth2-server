@@ -51,7 +51,7 @@ class DeviceCodeGrant extends AbstractGrant
     public function __construct(
         DeviceCodeRepositoryInterface $deviceCodeRepository,
         RefreshTokenRepositoryInterface $refreshTokenRepository,
-        private DateInterval $deviceCodeTTL,
+        private readonly DateInterval $deviceCodeTTL,
         string $verificationUri,
         private readonly int $retryInterval = 5
     ) {

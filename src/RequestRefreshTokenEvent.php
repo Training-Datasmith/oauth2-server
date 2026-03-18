@@ -22,7 +22,7 @@ class RequestRefreshTokenEvent extends RequestEvent
         string $name,
         ServerRequestInterface $request,
         #[SensitiveParameter]
-        private RefreshTokenEntityInterface $refreshToken
+        private readonly RefreshTokenEntityInterface $refreshToken
     ) {
         parent::__construct($name, $request);
     }

@@ -64,7 +64,7 @@ class AuthCodeGrant extends AbstractAuthorizeGrant
     public function __construct(
         AuthCodeRepositoryInterface $authCodeRepository,
         RefreshTokenRepositoryInterface $refreshTokenRepository,
-        private DateInterval $authCodeTTL
+        private readonly DateInterval $authCodeTTL
     ) {
         $this->setAuthCodeRepository($authCodeRepository);
         $this->setRefreshTokenRepository($refreshTokenRepository);
@@ -117,7 +117,7 @@ class AuthCodeGrant extends AbstractAuthorizeGrant
                 $authCodePayload->user_id,
                 $authCodePayload->auth_code_id
             );
-        } catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentException) {
             throw OAuthServerException::invalidGrant('Cannot validate the provided authorization code');
         } catch (LogicException $e) {
             throw OAuthServerException::invalidRequest('code', 'Issue decrypting the authorization code', $e);
@@ -317,9 +317,7 @@ class AuthCodeGrant extends AbstractAuthorizeGrant
                 throw OAuthServerException::invalidRequest(
                     'code_challenge_method',
                     'Code challenge method must be one of ' . implode(', ', array_map(
-                        function ($method) {
-                            return '`' . $method . '`';
-                        },
+                        fn(int|string $method) => '`' . $method . '`',
                         array_keys($this->codeChallengeVerifiers)
                     ))
                 );

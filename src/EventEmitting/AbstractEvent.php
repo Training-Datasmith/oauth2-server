@@ -11,7 +11,7 @@ class AbstractEvent implements StoppableEventInterface, HasEventName
 {
     private bool $propagationStopped = false;
 
-    public function __construct(private string $name)
+    public function __construct(private readonly string $name)
     {
     }
 
