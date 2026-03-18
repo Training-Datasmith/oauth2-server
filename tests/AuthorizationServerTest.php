@@ -4,8 +4,14 @@ declare(strict_types=1);
 
 namespace LeagueTests;
 
+use function base64_encode;
+use function chmod;
+
 use DateInterval;
 use Defuse\Crypto\Key;
+
+use function get_class;
+
 use Laminas\Diactoros\Response;
 use Laminas\Diactoros\ServerRequest;
 use Laminas\Diactoros\ServerRequestFactory;
@@ -28,14 +34,13 @@ use LeagueTests\Stubs\GrantType;
 use LeagueTests\Stubs\ScopeEntity;
 use LeagueTests\Stubs\StubResponseType;
 use LeagueTests\Stubs\UserEntity;
+
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
-use ReflectionClass;
 
-use function base64_encode;
-use function chmod;
-use function get_class;
 use function random_bytes;
+
+use ReflectionClass;
 
 class AuthorizationServerTest extends TestCase
 {

@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace LeagueTests\Stubs;
 
+use function base64_encode;
+
 use Defuse\Crypto\Key;
+
 use League\OAuth2\Server\CryptTrait;
 
-use function base64_encode;
 use function random_bytes;
 
 class CryptTraitStub

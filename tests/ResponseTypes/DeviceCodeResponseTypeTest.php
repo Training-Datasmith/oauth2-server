@@ -4,18 +4,22 @@ declare(strict_types=1);
 
 namespace LeagueTests\ResponseTypes;
 
+use function base64_encode;
+
 use DateInterval;
 use DateTimeImmutable;
+
+use function json_decode;
+
 use Laminas\Diactoros\Response;
 use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\ResponseTypes\DeviceCodeResponse;
 use LeagueTests\Stubs\ClientEntity;
 use LeagueTests\Stubs\DeviceCodeEntity;
+
 use LeagueTests\Stubs\ScopeEntity;
 use PHPUnit\Framework\TestCase;
 
-use function base64_encode;
-use function json_decode;
 use function random_bytes;
 
 class DeviceCodeResponseTypeTest extends TestCase

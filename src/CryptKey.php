@@ -14,19 +14,23 @@ declare(strict_types=1);
 
 namespace League\OAuth2\Server;
 
-use LogicException;
-use OpenSSLAsymmetricKey;
-use SensitiveParameter;
-
 use function decoct;
 use function file_get_contents;
 use function fileperms;
+
 use function in_array;
 use function is_file;
 use function is_readable;
+
+use LogicException;
+
 use function openssl_pkey_get_details;
 use function openssl_pkey_get_private;
 use function openssl_pkey_get_public;
+
+use OpenSSLAsymmetricKey;
+use SensitiveParameter;
+
 use function sprintf;
 use function trigger_error;
 

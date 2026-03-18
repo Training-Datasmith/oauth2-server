@@ -14,11 +14,13 @@ declare(strict_types=1);
 
 namespace League\OAuth2\Server\ResponseTypes;
 
+use function json_encode;
+
 use League\OAuth2\Server\Entities\DeviceCodeEntityInterface;
 use LogicException;
+
 use Psr\Http\Message\ResponseInterface;
 
-use function json_encode;
 use function time;
 
 class DeviceCodeResponse extends AbstractResponseType

@@ -20,10 +20,12 @@ use Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException;
 use Defuse\Crypto\Key;
 use Exception;
 use InvalidArgumentException;
-use LogicException;
-use SensitiveParameter;
 
 use function is_string;
+
+use LogicException;
+
+use SensitiveParameter;
 
 trait CryptTrait
 {

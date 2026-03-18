@@ -13,13 +13,17 @@ declare(strict_types=1);
 namespace League\OAuth2\Server\Exception;
 
 use Exception;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Throwable;
 
 use function htmlspecialchars;
 use function http_build_query;
+
+use Psr\Http\Message\ResponseInterface;
+
+use Psr\Http\Message\ServerRequestInterface;
+
 use function sprintf;
+
+use Throwable;
 
 class OAuthServerException extends Exception
 {

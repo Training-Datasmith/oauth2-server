@@ -12,11 +12,13 @@ declare(strict_types=1);
 
 namespace OAuth2ServerExamples\Repositories;
 
+use function array_key_exists;
+
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
+
 use OAuth2ServerExamples\Entities\ClientEntity;
 
-use function array_key_exists;
 use function password_hash;
 use function password_verify;
 

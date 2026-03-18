@@ -12,11 +12,12 @@ declare(strict_types=1);
 
 namespace League\OAuth2\Server\Entities\Traits;
 
+use function array_values;
+
 use DateTimeImmutable;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
-use League\OAuth2\Server\Entities\ScopeEntityInterface;
 
-use function array_values;
+use League\OAuth2\Server\Entities\ScopeEntityInterface;
 
 trait TokenEntityTrait
 {

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace LeagueTests\Grant;
 
+use function base64_encode;
+
 use DateInterval;
 use Laminas\Diactoros\ServerRequest;
 use League\OAuth2\Server\CryptKey;
@@ -25,9 +27,8 @@ use LeagueTests\Stubs\RefreshTokenEntity;
 use LeagueTests\Stubs\ScopeEntity;
 use LogicException;
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 
-use function base64_encode;
+use ReflectionClass;
 
 class AbstractGrantTest extends TestCase
 {

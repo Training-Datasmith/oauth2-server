@@ -12,12 +12,13 @@ declare(strict_types=1);
 
 namespace OAuth2ServerExamples\Repositories;
 
+use function array_key_exists;
+
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
-use OAuth2ServerExamples\Entities\ScopeEntity;
 
-use function array_key_exists;
+use OAuth2ServerExamples\Entities\ScopeEntity;
 
 class ScopeRepository implements ScopeRepositoryInterface
 {

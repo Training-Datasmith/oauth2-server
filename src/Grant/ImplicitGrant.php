@@ -12,20 +12,24 @@ declare(strict_types=1);
 
 namespace League\OAuth2\Server\Grant;
 
+use function count;
+
 use DateInterval;
+
+use function is_array;
+use function is_null;
+
 use League\OAuth2\Server\Entities\UserEntityInterface;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\RequestEvent;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequestInterface;
 use League\OAuth2\Server\ResponseTypes\RedirectResponse;
+
 use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
 use LogicException;
 use Psr\Http\Message\ServerRequestInterface;
 
-use function count;
-use function is_array;
-use function is_null;
 use function time;
 
 class ImplicitGrant extends AbstractAuthorizeGrant

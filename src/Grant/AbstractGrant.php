@@ -14,11 +14,20 @@ declare(strict_types=1);
 
 namespace League\OAuth2\Server\Grant;
 
+use function array_filter;
+use function array_key_exists;
+use function base64_decode;
+use function bin2hex;
+
 use DateInterval;
 use DateTimeImmutable;
 use DomainException;
 use Error;
 use Exception;
+
+use function explode;
+use function is_string;
+
 use League\OAuth2\Server\CryptKeyInterface;
 use League\OAuth2\Server\CryptTrait;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
@@ -37,22 +46,18 @@ use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 use League\OAuth2\Server\RequestEvent;
+
 use League\OAuth2\Server\RequestTypes\AuthorizationRequestInterface;
 use League\OAuth2\Server\ResponseTypes\DeviceCodeResponse;
 use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
 use LogicException;
 use Psr\Http\Message\ServerRequestInterface;
-use TypeError;
 
-use function array_filter;
-use function array_key_exists;
-use function base64_decode;
-use function bin2hex;
-use function explode;
-use function is_string;
 use function random_bytes;
 use function substr;
 use function trim;
+
+use TypeError;
 
 /**
  * Abstract grant class.

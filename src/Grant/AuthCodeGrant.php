@@ -12,10 +12,25 @@ declare(strict_types=1);
 
 namespace League\OAuth2\Server\Grant;
 
+use function array_key_exists;
+use function array_keys;
+use function array_map;
+use function count;
+
 use DateInterval;
 use DateTimeImmutable;
 use Exception;
+
+use function hash_algos;
+use function implode;
+use function in_array;
+
 use InvalidArgumentException;
+
+use function is_array;
+use function json_decode;
+use function json_encode;
+
 use League\OAuth2\Server\CodeChallengeVerifiers\CodeChallengeVerifierInterface;
 use League\OAuth2\Server\CodeChallengeVerifiers\PlainVerifier;
 use League\OAuth2\Server\CodeChallengeVerifiers\S256Verifier;
@@ -23,6 +38,7 @@ use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\UserEntityInterface;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
+
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\RequestAccessTokenEvent;
 use League\OAuth2\Server\RequestEvent;
@@ -31,22 +47,16 @@ use League\OAuth2\Server\RequestTypes\AuthorizationRequestInterface;
 use League\OAuth2\Server\ResponseTypes\RedirectResponse;
 use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
 use LogicException;
-use Psr\Http\Message\ServerRequestInterface;
-use stdClass;
 
-use function array_key_exists;
-use function array_keys;
-use function array_map;
-use function count;
-use function hash_algos;
-use function implode;
-use function in_array;
-use function is_array;
-use function json_decode;
-use function json_encode;
 use function preg_match;
 use function property_exists;
+
+use Psr\Http\Message\ServerRequestInterface;
+
 use function sprintf;
+
+use stdClass;
+
 use function time;
 
 class AuthCodeGrant extends AbstractAuthorizeGrant
@@ -317,7 +327,7 @@ class AuthCodeGrant extends AbstractAuthorizeGrant
                 throw OAuthServerException::invalidRequest(
                     'code_challenge_method',
                     'Code challenge method must be one of ' . implode(', ', array_map(
-                        fn(int|string $method) => '`' . $method . '`',
+                        fn (int|string $method) => '`' . $method . '`',
                         array_keys($this->codeChallengeVerifiers)
                     ))
                 );

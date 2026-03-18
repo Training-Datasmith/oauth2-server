@@ -4,17 +4,22 @@ declare(strict_types=1);
 
 namespace LeagueTests\Utils;
 
-use League\OAuth2\Server\CryptKey;
-use LogicException;
-use PHPUnit\Framework\TestCase;
-use Throwable;
-
 use function file_get_contents;
 use function is_string;
+
+use League\OAuth2\Server\CryptKey;
+use LogicException;
+
 use function openssl_pkey_export;
 use function openssl_pkey_new;
+
+use PHPUnit\Framework\TestCase;
+
 use function sha1;
 use function sys_get_temp_dir;
+
+use Throwable;
+
 use function unlink;
 
 class CryptKeyTest extends TestCase

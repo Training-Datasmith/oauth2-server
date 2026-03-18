@@ -14,11 +14,12 @@ declare(strict_types=1);
 
 namespace League\OAuth2\Server\Grant;
 
+use function http_build_query;
+
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
-use League\OAuth2\Server\RequestTypes\AuthorizationRequestInterface;
 
-use function http_build_query;
+use League\OAuth2\Server\RequestTypes\AuthorizationRequestInterface;
 
 abstract class AbstractAuthorizeGrant extends AbstractGrant
 {

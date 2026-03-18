@@ -18,6 +18,9 @@ use DateInterval;
 use DateTimeImmutable;
 use Error;
 use Exception;
+
+use function is_null;
+
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\DeviceCodeEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
@@ -31,12 +34,12 @@ use League\OAuth2\Server\RequestRefreshTokenEvent;
 use League\OAuth2\Server\ResponseTypes\DeviceCodeResponse;
 use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TypeError;
 
-use function is_null;
 use function random_int;
 use function strlen;
 use function time;
+
+use TypeError;
 
 /**
  * Device Code grant class.

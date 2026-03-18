@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace LeagueTests\Grant;
 
 use DateInterval;
+
+use function json_encode;
+
 use Laminas\Diactoros\Response;
 use Laminas\Diactoros\ServerRequest;
 use League\OAuth2\Server\CryptKey;
@@ -31,9 +34,9 @@ use LeagueTests\Stubs\ScopeEntity;
 use LeagueTests\Stubs\StubResponseType;
 use LeagueTests\Stubs\UserEntity;
 use LogicException;
+
 use PHPUnit\Framework\TestCase;
 
-use function json_encode;
 use function str_repeat;
 use function time;
 use function uniqid;

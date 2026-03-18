@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace LeagueTests\Utils;
 
+use function base64_encode;
+
 use Defuse\Crypto\Key;
 use LeagueTests\Stubs\CryptTraitStub;
+
 use PHPUnit\Framework\TestCase;
 
-use function base64_encode;
 use function random_bytes;
 
 class CryptTraitTest extends TestCase

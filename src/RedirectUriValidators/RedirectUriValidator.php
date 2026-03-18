@@ -12,11 +12,11 @@ declare(strict_types=1);
 
 namespace League\OAuth2\Server\RedirectUriValidators;
 
-use League\Uri\Exceptions\SyntaxError;
-use League\Uri\Uri;
-
 use function in_array;
 use function is_string;
+
+use League\Uri\Exceptions\SyntaxError;
+use League\Uri\Uri;
 
 class RedirectUriValidator implements RedirectUriValidatorInterface
 {

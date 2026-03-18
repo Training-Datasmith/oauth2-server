@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace League\OAuth2\Server\AuthorizationValidators;
 
+use function date_default_timezone_get;
+
 use DateInterval;
 use DateTimeZone;
 use Lcobucci\Clock\SystemClock;
@@ -27,11 +29,12 @@ use League\OAuth2\Server\CryptKeyInterface;
 use League\OAuth2\Server\CryptTrait;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
+
+use function preg_replace;
+
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
 
-use function date_default_timezone_get;
-use function preg_replace;
 use function trim;
 
 class BearerTokenValidator implements AuthorizationValidatorInterface

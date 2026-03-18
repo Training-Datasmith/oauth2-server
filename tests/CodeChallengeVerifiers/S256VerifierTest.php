@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace LeagueTests\CodeChallengeVerifiers;
 
+use function base64_encode;
+use function hash;
+
 use League\OAuth2\Server\CodeChallengeVerifiers\S256Verifier;
 use PHPUnit\Framework\TestCase;
 
-use function base64_encode;
-use function hash;
 use function rtrim;
 use function strtr;
 

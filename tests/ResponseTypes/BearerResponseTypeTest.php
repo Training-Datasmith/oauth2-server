@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace LeagueTests\ResponseTypes;
 
+use function base64_encode;
+
 use DateInterval;
 use DateTimeImmutable;
+
+use function json_decode;
+
 use Laminas\Diactoros\Response;
 use Laminas\Diactoros\ServerRequest;
 use League\OAuth2\Server\AuthorizationValidators\BearerTokenValidator;
@@ -16,11 +21,10 @@ use League\OAuth2\Server\ResponseTypes\BearerTokenResponse;
 use LeagueTests\Stubs\AccessTokenEntity;
 use LeagueTests\Stubs\ClientEntity;
 use LeagueTests\Stubs\RefreshTokenEntity;
+
 use LeagueTests\Stubs\ScopeEntity;
 use PHPUnit\Framework\TestCase;
 
-use function base64_encode;
-use function json_decode;
 use function random_bytes;
 use function sprintf;
 

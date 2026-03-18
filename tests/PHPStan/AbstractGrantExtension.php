@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace LeagueTests\PHPStan;
 
+use function in_array;
+
 use League\OAuth2\Server\Grant\AbstractGrant;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
@@ -12,9 +14,8 @@ use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\NullType;
 use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
-use PHPStan\Type\TypeCombinator;
 
-use function in_array;
+use PHPStan\Type\TypeCombinator;
 
 final class AbstractGrantExtension implements DynamicMethodReturnTypeExtension
 {

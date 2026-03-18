@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace LeagueTests\Grant;
 
 use DateInterval;
+
+use function json_encode;
+
 use Laminas\Diactoros\Response;
 use Laminas\Diactoros\ServerRequest;
 use League\OAuth2\Server\CryptKey;
@@ -25,9 +28,9 @@ use LeagueTests\Stubs\CryptTraitStub;
 use LeagueTests\Stubs\RefreshTokenEntity;
 use LeagueTests\Stubs\ScopeEntity;
 use LeagueTests\Stubs\StubResponseType;
+
 use PHPUnit\Framework\TestCase;
 
-use function json_encode;
 use function time;
 
 class RefreshTokenGrantTest extends TestCase
@@ -597,7 +600,6 @@ class RefreshTokenGrantTest extends TestCase
         $grant->setAccessTokenRepository($accessTokenRepositoryMock);
         $grant->setEncryptionKey($this->cryptStub->getKey());
         $grant->setPrivateKey(new CryptKey('file://' . __DIR__ . '/../Stubs/private.key'));
-
 
         $scopes = [$fooScopeEntity, $barScopeEntity];
         $finalizedScopes = [$fooScopeEntity];

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace LeagueTests\Grant;
 
+use function base64_encode;
+
 use DateInterval;
 use DateTimeImmutable;
 use Laminas\Diactoros\Response;
@@ -27,9 +29,9 @@ use LeagueTests\Stubs\DeviceCodeEntity;
 use LeagueTests\Stubs\RefreshTokenEntity;
 use LeagueTests\Stubs\ScopeEntity;
 use LeagueTests\Stubs\StubResponseType;
+
 use PHPUnit\Framework\TestCase;
 
-use function base64_encode;
 use function random_bytes;
 use function uniqid;
 

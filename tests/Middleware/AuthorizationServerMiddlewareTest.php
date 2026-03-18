@@ -4,7 +4,12 @@ declare(strict_types=1);
 
 namespace LeagueTests\Middleware;
 
+use function base64_encode;
+
 use DateInterval;
+
+use function func_get_args;
+
 use Laminas\Diactoros\Response;
 use Laminas\Diactoros\ServerRequestFactory;
 use League\OAuth2\Server\AuthorizationServer;
@@ -17,11 +22,10 @@ use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 use LeagueTests\Stubs\AccessTokenEntity;
 use LeagueTests\Stubs\ClientEntity;
 use LeagueTests\Stubs\ScopeEntity;
+
 use LeagueTests\Stubs\StubResponseType;
 use PHPUnit\Framework\TestCase;
 
-use function base64_encode;
-use function func_get_args;
 use function random_bytes;
 
 class AuthorizationServerMiddlewareTest extends TestCase

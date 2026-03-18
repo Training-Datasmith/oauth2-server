@@ -14,13 +14,15 @@ declare(strict_types=1);
 
 namespace League\OAuth2\Server\ResponseTypes;
 
+use function array_merge;
+use function json_encode;
+
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use LogicException;
+
 use Psr\Http\Message\ResponseInterface;
 use SensitiveParameter;
 
-use function array_merge;
-use function json_encode;
 use function time;
 
 class BearerTokenResponse extends AbstractResponseType
