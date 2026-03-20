@@ -1,25 +1,22 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace League\O_Auth2\Server;
 
-namespace League\OAuth2\Server;
-
-interface CryptKeyInterface
+interface Crypt_Key_Interface
 {
     /**
      * Retrieve key path.
      */
-    public function getKeyPath(): string;
-
+    public function get_key_path(): string;
     /**
      * Retrieve key pass phrase.
      */
-    public function getPassPhrase(): ?string;
-
+    public function get_pass_phrase(): ?string;
     /**
      * Get key contents
      *
      * @return string Key contents
      */
-    public function getKeyContents(): string;
+    public function get_key_contents(): string;
 }

@@ -9,83 +9,55 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
-
-declare(strict_types=1);
-
-namespace League\OAuth2\Server\ResponseTypes;
+declare (strict_types=1);
+namespace League\O_Auth2\Server\Response_Types;
 
 use function json_encode;
-
-use League\OAuth2\Server\Entities\DeviceCodeEntityInterface;
+use League\O_Auth2\Server\Entities\Device_Code_Entity_Interface;
 use LogicException;
-
-use Psr\Http\Message\ResponseInterface;
-
+use Psr\Http\Message\Response_Interface;
 use function time;
-
-class DeviceCodeResponse extends AbstractResponseType
+class Device_Code_Response extends Abstract_Response_Type
 {
-    protected DeviceCodeEntityInterface $deviceCodeEntity;
-    private bool $includeVerificationUriComplete = false;
-    private bool $includeInterval = false;
-
+    protected Device_Code_Entity_Interface $device_code_entity;
+    private bool $include_verification_uri_complete = false;
+    private bool $include_interval = false;
     /**
      * {@inheritdoc}
      */
-    public function generateHttpResponse(ResponseInterface $response): ResponseInterface
+    public function generate_http_response(Response_Interface $response): Response_Interface
     {
-        $expireDateTime = $this->deviceCodeEntity->getExpiryDateTime()->getTimestamp();
-
-        $responseParams = [
-            'device_code'      => $this->deviceCodeEntity->getIdentifier(),
-            'user_code'        => $this->deviceCodeEntity->getUserCode(),
-            'verification_uri' => $this->deviceCodeEntity->getVerificationUri(),
-            'expires_in'       => $expireDateTime - time(),
-        ];
-
-        if ($this->includeVerificationUriComplete === true) {
-            $responseParams['verification_uri_complete'] = $this->deviceCodeEntity->getVerificationUriComplete();
+        $expire_date_time = $this->device_code_entity->get_expiry_date_time()->get_timestamp();
+        $response_params = ['device_code' => $this->device_code_entity->get_identifier(), 'user_code' => $this->device_code_entity->get_user_code(), 'verification_uri' => $this->device_code_entity->get_verification_uri(), 'expires_in' => $expire_date_time - time()];
+        if ($this->include_verification_uri_complete === true) {
+            $response_params['verification_uri_complete'] = $this->device_code_entity->get_verification_uri_complete();
         }
-
-        if ($this->includeInterval === true) {
-            $responseParams['interval'] = $this->deviceCodeEntity->getInterval();
+        if ($this->include_interval === true) {
+            $response_params['interval'] = $this->device_code_entity->get_interval();
         }
-
-        $responseParams = json_encode($responseParams);
-
-        if ($responseParams === false) {
+        $response_params = json_encode($response_params);
+        if ($response_params === false) {
             throw new LogicException('Error encountered JSON encoding response parameters');
         }
-
-        $response = $response
-            ->withStatus(200)
-            ->withHeader('pragma', 'no-cache')
-            ->withHeader('cache-control', 'no-store')
-            ->withHeader('content-type', 'application/json; charset=UTF-8');
-
-        $response->getBody()->write($responseParams);
-
+        $response = $response->with_status(200)->with_header('pragma', 'no-cache')->with_header('cache-control', 'no-store')->with_header('content-type', 'application/json; charset=UTF-8');
+        $response->get_body()->write($response_params);
         return $response;
     }
-
     /**
      * {@inheritdoc}
      */
-    public function setDeviceCodeEntity(DeviceCodeEntityInterface $deviceCodeEntity): void
+    public function set_device_code_entity(Device_Code_Entity_Interface $device_code_entity): void
     {
-        $this->deviceCodeEntity = $deviceCodeEntity;
+        $this->device_code_entity = $device_code_entity;
     }
-
-    public function includeVerificationUriComplete(): void
+    public function include_verification_uri_complete(): void
     {
-        $this->includeVerificationUriComplete = true;
+        $this->include_verification_uri_complete = true;
     }
-
-    public function includeInterval(): void
+    public function include_interval(): void
     {
-        $this->includeInterval = true;
+        $this->include_interval = true;
     }
-
     /**
      * Add custom fields to your Bearer Token response here, then override
      * AuthorizationServer::getResponseType() to pull in your version of
@@ -93,7 +65,7 @@ class DeviceCodeResponse extends AbstractResponseType
      *
      * @return array<array-key,mixed>
      */
-    protected function getExtraParams(DeviceCodeEntityInterface $deviceCode): array
+    protected function get_extra_params(Device_Code_Entity_Interface $device_code): array
     {
         return [];
     }

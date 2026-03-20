@@ -7,15 +7,13 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
+declare (strict_types=1);
+namespace League\O_Auth2\Server\Redirect_Uri_Validators;
 
-declare(strict_types=1);
-
-namespace League\OAuth2\Server\RedirectUriValidators;
-
-interface RedirectUriValidatorInterface
+interface Redirect_Uri_Validator_Interface
 {
     /**
      * Validates the redirect uri.
      */
-    public function validateRedirectUri(string $redirectUri): bool;
+    public function validate_redirect_uri(string $redirect_uri): bool;
 }

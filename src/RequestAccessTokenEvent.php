@@ -7,31 +7,28 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
+declare (strict_types=1);
+namespace League\O_Auth2\Server;
 
-declare(strict_types=1);
-
-namespace League\OAuth2\Server;
-
-use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use SensitiveParameter;
-
-class RequestAccessTokenEvent extends RequestEvent
+use League\O_Auth2\Server\Entities\Access_Token_Entity_Interface;
+use Psr\Http\Message\Server_Request_Interface;
+use Sensitive_Parameter;
+class Request_Access_Token_Event extends Request_Event
 {
     public function __construct(
         string $name,
-        ServerRequestInterface $request,
-        #[SensitiveParameter]
-        private readonly AccessTokenEntityInterface $accessToken
-    ) {
+        Server_Request_Interface $request,
+        #[Sensitive_Parameter]
+        private readonly Access_Token_Entity_Interface $access_token
+    )
+    {
         parent::__construct($name, $request);
     }
-
     /**
      * @codeCoverageIgnore
      */
-    public function getAccessToken(): AccessTokenEntityInterface
+    public function get_access_token(): Access_Token_Entity_Interface
     {
-        return $this->accessToken;
+        return $this->access_token;
     }
 }

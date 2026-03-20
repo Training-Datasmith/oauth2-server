@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace League\O_Auth2\Server\Event_Emitting;
 
-namespace League\OAuth2\Server\EventEmitting;
-
-interface EmitterAwareInterface
+interface Emitter_Aware_Interface
 {
-    public function getEmitter(): EventEmitter;
-
-    public function setEmitter(EventEmitter $emitter): self;
+    public function get_emitter(): Event_Emitter;
+    public function set_emitter(Event_Emitter $emitter): self;
 }

@@ -7,32 +7,26 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
+declare (strict_types=1);
+namespace League\O_Auth2\Server;
 
-declare(strict_types=1);
-
-namespace League\OAuth2\Server;
-
-use League\OAuth2\Server\EventEmitting\AbstractEvent;
-use Psr\Http\Message\ServerRequestInterface;
-
-class RequestEvent extends AbstractEvent
+use League\O_Auth2\Server\Event_Emitting\Abstract_Event;
+use Psr\Http\Message\Server_Request_Interface;
+class Request_Event extends Abstract_Event
 {
     public const CLIENT_AUTHENTICATION_FAILED = 'client.authentication.failed';
     public const USER_AUTHENTICATION_FAILED = 'user.authentication.failed';
     public const REFRESH_TOKEN_CLIENT_FAILED = 'refresh_token.client.failed';
-
     public const REFRESH_TOKEN_ISSUED = 'refresh_token.issued';
     public const ACCESS_TOKEN_ISSUED = 'access_token.issued';
-
-    public function __construct(string $name, private readonly ServerRequestInterface $request)
+    public function __construct(string $name, private readonly Server_Request_Interface $request)
     {
         parent::__construct($name);
     }
-
     /**
      * @codeCoverageIgnore
      */
-    public function getRequest(): ServerRequestInterface
+    public function get_request(): Server_Request_Interface
     {
         return $this->request;
     }

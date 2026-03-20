@@ -7,30 +7,26 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
+declare (strict_types=1);
+namespace League\O_Auth2\Server\Entities\Traits;
 
-declare(strict_types=1);
-
-namespace League\OAuth2\Server\Entities\Traits;
-
-trait EntityTrait
+trait Entity_Trait
 {
     /**
      * @var non-empty-string
      */
     protected string $identifier;
-
     /**
      * @return non-empty-string
      */
-    public function getIdentifier(): string
+    public function get_identifier(): string
     {
         return $this->identifier;
     }
-
     /**
      * @param non-empty-string $identifier
      */
-    public function setIdentifier(string $identifier): void
+    public function set_identifier(string $identifier): void
     {
         $this->identifier = $identifier;
     }

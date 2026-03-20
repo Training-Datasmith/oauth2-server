@@ -7,30 +7,25 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
+declare (strict_types=1);
+namespace League\O_Auth2\Server\Middleware;
 
-declare(strict_types=1);
-
-namespace League\OAuth2\Server\Middleware;
-
-use League\OAuth2\Server\AuthorizationServer;
-use League\OAuth2\Server\Exception\OAuthServerException;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-
-class AuthorizationServerMiddleware
+use League\O_Auth2\Server\Authorization_Server;
+use League\O_Auth2\Server\Exception\O_Auth_Server_Exception;
+use Psr\Http\Message\Response_Interface;
+use Psr\Http\Message\Server_Request_Interface;
+class Authorization_Server_Middleware
 {
-    public function __construct(private readonly AuthorizationServer $server)
+    public function __construct(private readonly Authorization_Server $server)
     {
     }
-
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
+    public function __invoke(Server_Request_Interface $request, Response_Interface $response, callable $next): Response_Interface
     {
         try {
-            $response = $this->server->respondToAccessTokenRequest($request, $response);
-        } catch (OAuthServerException $exception) {
-            return $exception->generateHttpResponse($response);
+            $response = $this->server->respond_to_access_token_request($request, $response);
+        } catch (O_Auth_Server_Exception $exception) {
+            return $exception->generate_http_response($response);
         }
-
         // Pass the request and response on to the next responder in the chain
         return $next($request, $response);
     }

@@ -7,26 +7,22 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
+declare (strict_types=1);
+namespace League\O_Auth2\Server\Repositories;
 
-declare(strict_types=1);
-
-namespace League\OAuth2\Server\Repositories;
-
-use League\OAuth2\Server\Entities\ClientEntityInterface;
-use League\OAuth2\Server\Entities\ScopeEntityInterface;
-
+use League\O_Auth2\Server\Entities\Client_Entity_Interface;
+use League\O_Auth2\Server\Entities\Scope_Entity_Interface;
 /**
  * Scope interface.
  */
-interface ScopeRepositoryInterface extends RepositoryInterface
+interface Scope_Repository_Interface extends Repository_Interface
 {
     /**
      * Return information about a scope.
      *
      * @param string $identifier The scope identifier
      */
-    public function getScopeEntityByIdentifier(string $identifier): ?ScopeEntityInterface;
-
+    public function get_scope_entity_by_identifier(string $identifier): ?Scope_Entity_Interface;
     /**
      * Given a client, grant type and optional user identifier validate the set of scopes requested are valid and optionally
      * append additional scopes or remove requested scopes.
@@ -35,11 +31,5 @@ interface ScopeRepositoryInterface extends RepositoryInterface
      *
      * @return ScopeEntityInterface[]
      */
-    public function finalizeScopes(
-        array $scopes,
-        string $grantType,
-        ClientEntityInterface $clientEntity,
-        string|null $userIdentifier = null,
-        ?string $authCodeId = null
-    ): array;
+    public function finalize_scopes(array $scopes, string $grant_type, Client_Entity_Interface $client_entity, string|null $user_identifier = null, ?string $auth_code_id = null): array;
 }

@@ -7,157 +7,128 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
+declare (strict_types=1);
+namespace League\O_Auth2\Server\Request_Types;
 
-declare(strict_types=1);
-
-namespace League\OAuth2\Server\RequestTypes;
-
-use League\OAuth2\Server\Entities\ClientEntityInterface;
-use League\OAuth2\Server\Entities\ScopeEntityInterface;
-use League\OAuth2\Server\Entities\UserEntityInterface;
-
-class AuthorizationRequest implements AuthorizationRequestInterface
+use League\O_Auth2\Server\Entities\Client_Entity_Interface;
+use League\O_Auth2\Server\Entities\Scope_Entity_Interface;
+use League\O_Auth2\Server\Entities\User_Entity_Interface;
+class Authorization_Request implements Authorization_Request_Interface
 {
     /**
      * The grant type identifier
      */
-    protected string $grantTypeId;
-
+    protected string $grant_type_id;
     /**
      * The client identifier
      */
-    protected ClientEntityInterface $client;
-
+    protected Client_Entity_Interface $client;
     /**
      * The user identifier
      */
-    protected UserEntityInterface $user;
-
+    protected User_Entity_Interface $user;
     /**
      * An array of scope identifiers
      *
      * @var ScopeEntityInterface[]
      */
     protected array $scopes = [];
-
     /**
      * Has the user authorized the authorization request
      */
-    protected bool $authorizationApproved = false;
-
+    protected bool $authorization_approved = false;
     /**
      * The redirect URI used in the request
      */
-    protected ?string $redirectUri = null;
-
+    protected ?string $redirect_uri = null;
     /**
      * The state parameter on the authorization request
      */
     protected ?string $state = null;
-
     /**
      * The code challenge (if provided)
      */
-    protected string $codeChallenge;
-
+    protected string $code_challenge;
     /**
      * The code challenge method (if provided)
      */
-    protected string $codeChallengeMethod;
-
-    public function getGrantTypeId(): string
+    protected string $code_challenge_method;
+    public function get_grant_type_id(): string
     {
-        return $this->grantTypeId;
+        return $this->grant_type_id;
     }
-
-    public function setGrantTypeId(string $grantTypeId): void
+    public function set_grant_type_id(string $grant_type_id): void
     {
-        $this->grantTypeId = $grantTypeId;
+        $this->grant_type_id = $grant_type_id;
     }
-
-    public function getClient(): ClientEntityInterface
+    public function get_client(): Client_Entity_Interface
     {
         return $this->client;
     }
-
-    public function setClient(ClientEntityInterface $client): void
+    public function set_client(Client_Entity_Interface $client): void
     {
         $this->client = $client;
     }
-
-    public function getUser(): ?UserEntityInterface
+    public function get_user(): ?User_Entity_Interface
     {
         return $this->user ?? null;
     }
-
-    public function setUser(UserEntityInterface $user): void
+    public function set_user(User_Entity_Interface $user): void
     {
         $this->user = $user;
     }
-
     /**
      * @return ScopeEntityInterface[]
      */
-    public function getScopes(): array
+    public function get_scopes(): array
     {
         return $this->scopes;
     }
-
     /**
      * @param ScopeEntityInterface[] $scopes
      */
-    public function setScopes(array $scopes): void
+    public function set_scopes(array $scopes): void
     {
         $this->scopes = $scopes;
     }
-
-    public function isAuthorizationApproved(): bool
+    public function is_authorization_approved(): bool
     {
-        return $this->authorizationApproved;
+        return $this->authorization_approved;
     }
-
-    public function setAuthorizationApproved(bool $authorizationApproved): void
+    public function set_authorization_approved(bool $authorization_approved): void
     {
-        $this->authorizationApproved = $authorizationApproved;
+        $this->authorization_approved = $authorization_approved;
     }
-
-    public function getRedirectUri(): ?string
+    public function get_redirect_uri(): ?string
     {
-        return $this->redirectUri;
+        return $this->redirect_uri;
     }
-
-    public function setRedirectUri(?string $redirectUri): void
+    public function set_redirect_uri(?string $redirect_uri): void
     {
-        $this->redirectUri = $redirectUri;
+        $this->redirect_uri = $redirect_uri;
     }
-
-    public function getState(): ?string
+    public function get_state(): ?string
     {
         return $this->state;
     }
-
-    public function setState(string $state): void
+    public function set_state(string $state): void
     {
         $this->state = $state;
     }
-
-    public function getCodeChallenge(): ?string
+    public function get_code_challenge(): ?string
     {
-        return $this->codeChallenge ?? null;
+        return $this->code_challenge ?? null;
     }
-
-    public function setCodeChallenge(string $codeChallenge): void
+    public function set_code_challenge(string $code_challenge): void
     {
-        $this->codeChallenge = $codeChallenge;
+        $this->code_challenge = $code_challenge;
     }
-
-    public function getCodeChallengeMethod(): ?string
+    public function get_code_challenge_method(): ?string
     {
-        return $this->codeChallengeMethod ?? null;
+        return $this->code_challenge_method ?? null;
     }
-
-    public function setCodeChallengeMethod(string $codeChallengeMethod): void
+    public function set_code_challenge_method(string $code_challenge_method): void
     {
-        $this->codeChallengeMethod = $codeChallengeMethod;
+        $this->code_challenge_method = $code_challenge_method;
     }
 }

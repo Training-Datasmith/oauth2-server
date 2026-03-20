@@ -7,106 +7,78 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
-
-declare(strict_types=1);
-
-namespace League\OAuth2\Server\Entities\Traits;
+declare (strict_types=1);
+namespace League\O_Auth2\Server\Entities\Traits;
 
 use DateTimeImmutable;
 use Lcobucci\JWT\Configuration;
-use Lcobucci\JWT\Signer\Key\InMemory;
+use Lcobucci\JWT\Signer\Key\In_Memory;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\Token;
-use League\OAuth2\Server\CryptKeyInterface;
-use League\OAuth2\Server\Entities\ClientEntityInterface;
-use League\OAuth2\Server\Entities\ScopeEntityInterface;
+use League\O_Auth2\Server\Crypt_Key_Interface;
+use League\O_Auth2\Server\Entities\Client_Entity_Interface;
+use League\O_Auth2\Server\Entities\Scope_Entity_Interface;
 use RuntimeException;
-use SensitiveParameter;
-
-trait AccessTokenTrait
+use Sensitive_Parameter;
+trait Access_Token_Trait
 {
-    private CryptKeyInterface $privateKey;
-
-    private Configuration $jwtConfiguration;
-
+    private Crypt_Key_Interface $private_key;
+    private Configuration $jwt_configuration;
     /**
      * Set the private key used to encrypt this access token.
      */
-    public function setPrivateKey(
-        #[SensitiveParameter]
-        CryptKeyInterface $privateKey
-    ): void {
-        $this->privateKey = $privateKey;
+    public function set_private_key(
+        #[Sensitive_Parameter]
+        Crypt_Key_Interface $private_key
+    ): void
+    {
+        $this->private_key = $private_key;
     }
-
     /**
      * Initialise the JWT Configuration.
      */
-    public function initJwtConfiguration(): void
+    public function init_jwt_configuration(): void
     {
-        $privateKeyContents = $this->privateKey->getKeyContents();
-
-        if ($privateKeyContents === '') {
+        $private_key_contents = $this->private_key->get_key_contents();
+        if ($private_key_contents === '') {
             throw new RuntimeException('Private key is empty');
         }
-
-        $this->jwtConfiguration = Configuration::forAsymmetricSigner(
-            new Sha256(),
-            InMemory::plainText($privateKeyContents, $this->privateKey->getPassPhrase() ?? ''),
-            InMemory::plainText('empty', 'empty')
-        );
+        $this->jwt_configuration = Configuration::for_asymmetric_signer(new Sha256(), In_Memory::plain_text($private_key_contents, $this->private_key->get_pass_phrase() ?? ''), In_Memory::plain_text('empty', 'empty'));
     }
-
     /**
      * Generate a JWT from the access token
      */
-    private function convertToJWT(): Token
+    private function convert_to_jwt(): Token
     {
-        $this->initJwtConfiguration();
-
-        return $this->jwtConfiguration->builder()
-            ->permittedFor($this->getClient()->getIdentifier())
-            ->identifiedBy($this->getIdentifier())
-            ->issuedAt(new DateTimeImmutable())
-            ->canOnlyBeUsedAfter(new DateTimeImmutable())
-            ->expiresAt($this->getExpiryDateTime())
-            ->relatedTo($this->getSubjectIdentifier())
-            ->withClaim('scopes', $this->getScopes())
-            ->getToken($this->jwtConfiguration->signer(), $this->jwtConfiguration->signingKey());
+        $this->init_jwt_configuration();
+        return $this->jwt_configuration->builder()->permitted_for($this->get_client()->get_identifier())->identified_by($this->get_identifier())->issued_at(new DateTimeImmutable())->can_only_be_used_after(new DateTimeImmutable())->expires_at($this->get_expiry_date_time())->related_to($this->get_subject_identifier())->with_claim('scopes', $this->get_scopes())->get_token($this->jwt_configuration->signer(), $this->jwt_configuration->signing_key());
     }
-
     /**
      * Generate a string representation from the access token
      */
-    public function toString(): string
+    public function to_string(): string
     {
-        return $this->convertToJWT()->toString();
+        return $this->convert_to_jwt()->to_string();
     }
-
-    abstract public function getClient(): ClientEntityInterface;
-
-    abstract public function getExpiryDateTime(): DateTimeImmutable;
-
+    abstract public function get_client(): Client_Entity_Interface;
+    abstract public function get_expiry_date_time(): DateTimeImmutable;
     /**
      * @return non-empty-string|null
      */
-    abstract public function getUserIdentifier(): string|null;
-
+    abstract public function get_user_identifier(): string|null;
     /**
      * @return ScopeEntityInterface[]
      */
-    abstract public function getScopes(): array;
-
+    abstract public function get_scopes(): array;
     /**
      * @return non-empty-string
      */
-    abstract public function getIdentifier(): string;
-
+    abstract public function get_identifier(): string;
     /**
      * @return non-empty-string
      */
-    private function getSubjectIdentifier(): string
+    private function get_subject_identifier(): string
     {
-        return $this->getUserIdentifier() ?? $this->getClient()->getIdentifier();
+        return $this->get_user_identifier() ?? $this->get_client()->get_identifier();
     }
 }

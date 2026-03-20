@@ -7,38 +7,32 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
+declare (strict_types=1);
+namespace League\O_Auth2\Server\Entities;
 
-declare(strict_types=1);
-
-namespace League\OAuth2\Server\Entities;
-
-interface ClientEntityInterface
+interface Client_Entity_Interface
 {
     /**
      * Get the client's identifier.
      *
      * @return non-empty-string
      */
-    public function getIdentifier(): string;
-
+    public function get_identifier(): string;
     /**
      * Get the client's name.
      */
-    public function getName(): string;
-
+    public function get_name(): string;
     /**
      * Returns the registered redirect URI (as a string). Alternatively return
      * an indexed array of redirect URIs.
      *
      * @return string|string[]
      */
-    public function getRedirectUri(): string|array;
-
+    public function get_redirect_uri(): string|array;
     /**
      * Returns true if the client is confidential.
      */
-    public function isConfidential(): bool;
-
+    public function is_confidential(): bool;
     /*
      * Returns true if the client supports the given grant type.
      *

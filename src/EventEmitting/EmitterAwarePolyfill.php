@@ -1,35 +1,28 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace League\O_Auth2\Server\Event_Emitting;
 
-namespace League\OAuth2\Server\EventEmitting;
-
-use League\Event\ListenerRegistry;
-use Psr\EventDispatcher\EventDispatcherInterface;
-
-trait EmitterAwarePolyfill
+use League\Event\Listener_Registry;
+use Psr\Event_Dispatcher\Event_Dispatcher_Interface;
+trait Emitter_Aware_Polyfill
 {
-    private EventEmitter $emitter;
-
-    public function getEmitter(): EventEmitter
+    private Event_Emitter $emitter;
+    public function get_emitter(): Event_Emitter
     {
-        return $this->emitter ??= new EventEmitter();
+        return $this->emitter ??= new Event_Emitter();
     }
-
-    public function setEmitter(EventEmitter $emitter): self
+    public function set_emitter(Event_Emitter $emitter): self
     {
         $this->emitter = $emitter;
-
         return $this;
     }
-
-    public function getEventDispatcher(): EventDispatcherInterface
+    public function get_event_dispatcher(): Event_Dispatcher_Interface
     {
-        return $this->getEmitter();
+        return $this->get_emitter();
     }
-
-    public function getListenerRegistry(): ListenerRegistry
+    public function get_listener_registry(): Listener_Registry
     {
-        return $this->getEmitter();
+        return $this->get_emitter();
     }
 }

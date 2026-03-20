@@ -7,20 +7,17 @@
  *
  * @link      https://github.com/thephpleague/oauth2-server
  */
+declare (strict_types=1);
+namespace League\O_Auth2\Server\Entities\Traits;
 
-declare(strict_types=1);
-
-namespace League\OAuth2\Server\Entities\Traits;
-
-trait ScopeTrait
+trait Scope_Trait
 {
     /**
      * Serialize the object to the scopes string identifier when using json_encode().
      */
     public function jsonSerialize(): string
     {
-        return $this->getIdentifier();
+        return $this->get_identifier();
     }
-
-    abstract public function getIdentifier(): string;
+    abstract public function get_identifier(): string;
 }

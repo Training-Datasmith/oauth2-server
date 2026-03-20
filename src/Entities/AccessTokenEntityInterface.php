@@ -7,22 +7,18 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
+declare (strict_types=1);
+namespace League\O_Auth2\Server\Entities;
 
-declare(strict_types=1);
-
-namespace League\OAuth2\Server\Entities;
-
-use League\OAuth2\Server\CryptKeyInterface;
-
-interface AccessTokenEntityInterface extends TokenInterface
+use League\O_Auth2\Server\Crypt_Key_Interface;
+interface Access_Token_Entity_Interface extends Token_Interface
 {
     /**
      * Set a private key used to encrypt the access token.
      */
-    public function setPrivateKey(CryptKeyInterface $privateKey): void;
-
+    public function set_private_key(Crypt_Key_Interface $private_key): void;
     /**
      * Generate a string representation of the access token.
      */
-    public function toString(): string;
+    public function to_string(): string;
 }

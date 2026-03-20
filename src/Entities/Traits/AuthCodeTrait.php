@@ -7,22 +7,18 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
+declare (strict_types=1);
+namespace League\O_Auth2\Server\Entities\Traits;
 
-declare(strict_types=1);
-
-namespace League\OAuth2\Server\Entities\Traits;
-
-trait AuthCodeTrait
+trait Auth_Code_Trait
 {
-    protected ?string $redirectUri = null;
-
-    public function getRedirectUri(): string|null
+    protected ?string $redirect_uri = null;
+    public function get_redirect_uri(): string|null
     {
-        return $this->redirectUri;
+        return $this->redirect_uri;
     }
-
-    public function setRedirectUri(string $uri): void
+    public function set_redirect_uri(string $uri): void
     {
-        $this->redirectUri = $uri;
+        $this->redirect_uri = $uri;
     }
 }

@@ -7,49 +7,41 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
-
-declare(strict_types=1);
-
-namespace League\OAuth2\Server\Entities\Traits;
+declare (strict_types=1);
+namespace League\O_Auth2\Server\Entities\Traits;
 
 use DateTimeImmutable;
-use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
-
-trait RefreshTokenTrait
+use League\O_Auth2\Server\Entities\Access_Token_Entity_Interface;
+trait Refresh_Token_Trait
 {
-    protected AccessTokenEntityInterface $accessToken;
-
-    protected DateTimeImmutable $expiryDateTime;
-
+    protected Access_Token_Entity_Interface $access_token;
+    protected DateTimeImmutable $expiry_date_time;
     /**
      * {@inheritdoc}
      */
-    public function setAccessToken(AccessTokenEntityInterface $accessToken): void
+    public function set_access_token(Access_Token_Entity_Interface $access_token): void
     {
-        $this->accessToken = $accessToken;
+        $this->access_token = $access_token;
     }
-
     /**
      * {@inheritdoc}
      */
-    public function getAccessToken(): AccessTokenEntityInterface
+    public function get_access_token(): Access_Token_Entity_Interface
     {
-        return $this->accessToken;
+        return $this->access_token;
     }
-
     /**
      * Get the token's expiry date time.
      */
-    public function getExpiryDateTime(): DateTimeImmutable
+    public function get_expiry_date_time(): DateTimeImmutable
     {
-        return $this->expiryDateTime;
+        return $this->expiry_date_time;
     }
-
     /**
      * Set the date time when the token expires.
      */
-    public function setExpiryDateTime(DateTimeImmutable $dateTime): void
+    public function set_expiry_date_time(DateTimeImmutable $date_time): void
     {
-        $this->expiryDateTime = $dateTime;
+        $this->expiry_date_time = $date_time;
     }
 }

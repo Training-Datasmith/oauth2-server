@@ -7,18 +7,15 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
+declare (strict_types=1);
+namespace League\O_Auth2\Server\Authorization_Validators;
 
-declare(strict_types=1);
-
-namespace League\OAuth2\Server\AuthorizationValidators;
-
-use Psr\Http\Message\ServerRequestInterface;
-
-interface AuthorizationValidatorInterface
+use Psr\Http\Message\Server_Request_Interface;
+interface Authorization_Validator_Interface
 {
     /**
      * Determine the access token in the authorization header and append OAUth
      * properties to the request as attributes.
      */
-    public function validateAuthorization(ServerRequestInterface $request): ServerRequestInterface;
+    public function validate_authorization(Server_Request_Interface $request): Server_Request_Interface;
 }

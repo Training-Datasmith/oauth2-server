@@ -7,20 +7,17 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
+declare (strict_types=1);
+namespace League\O_Auth2\Server\Code_Challenge_Verifiers;
 
-declare(strict_types=1);
-
-namespace League\OAuth2\Server\CodeChallengeVerifiers;
-
-interface CodeChallengeVerifierInterface
+interface Code_Challenge_Verifier_Interface
 {
     /**
      * Return code challenge method.
      */
-    public function getMethod(): string;
-
+    public function get_method(): string;
     /**
      * Verify the code challenge.
      */
-    public function verifyCodeChallenge(string $codeVerifier, string $codeChallenge): bool;
+    public function verify_code_challenge(string $code_verifier, string $code_challenge): bool;
 }

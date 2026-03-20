@@ -7,23 +7,15 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
+declare (strict_types=1);
+namespace League\O_Auth2\Server\Repositories;
 
-declare(strict_types=1);
-
-namespace League\OAuth2\Server\Repositories;
-
-use League\OAuth2\Server\Entities\ClientEntityInterface;
-use League\OAuth2\Server\Entities\UserEntityInterface;
-
-interface UserRepositoryInterface extends RepositoryInterface
+use League\O_Auth2\Server\Entities\Client_Entity_Interface;
+use League\O_Auth2\Server\Entities\User_Entity_Interface;
+interface User_Repository_Interface extends Repository_Interface
 {
     /**
      * Get a user entity.
      */
-    public function getUserEntityByUserCredentials(
-        string $username,
-        string $password,
-        string $grantType,
-        ClientEntityInterface $clientEntity
-    ): ?UserEntityInterface;
+    public function get_user_entity_by_user_credentials(string $username, string $password, string $grant_type, Client_Entity_Interface $client_entity): ?User_Entity_Interface;
 }

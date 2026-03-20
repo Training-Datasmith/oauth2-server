@@ -9,42 +9,32 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
-
-declare(strict_types=1);
-
-namespace League\OAuth2\Server\Grant;
+declare (strict_types=1);
+namespace League\O_Auth2\Server\Grant;
 
 use function http_build_query;
-
-use League\OAuth2\Server\Entities\ClientEntityInterface;
-use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
-
-use League\OAuth2\Server\RequestTypes\AuthorizationRequestInterface;
-
-abstract class AbstractAuthorizeGrant extends AbstractGrant
+use League\O_Auth2\Server\Entities\Client_Entity_Interface;
+use League\O_Auth2\Server\Request_Types\Authorization_Request;
+use League\O_Auth2\Server\Request_Types\Authorization_Request_Interface;
+abstract class Abstract_Authorize_Grant extends Abstract_Grant
 {
     /**
      * @param array<array-key,mixed> $params
      */
-    public function makeRedirectUri(string $uri, array $params = [], string $queryDelimiter = '?'): string
+    public function make_redirect_uri(string $uri, array $params = [], string $query_delimiter = '?'): string
     {
-        $uri .= str_contains($uri, $queryDelimiter) ? '&' : $queryDelimiter;
-
+        $uri .= str_contains($uri, $query_delimiter) ? '&' : $query_delimiter;
         return $uri . http_build_query($params);
     }
-
-    protected function createAuthorizationRequest(): AuthorizationRequestInterface
+    protected function create_authorization_request(): Authorization_Request_Interface
     {
-        return new AuthorizationRequest();
+        return new Authorization_Request();
     }
-
     /**
      * Get the client redirect URI.
      */
-    protected function getClientRedirectUri(ClientEntityInterface $client): string
+    protected function get_client_redirect_uri(Client_Entity_Interface $client): string
     {
-        return is_array($client->getRedirectUri())
-            ? $client->getRedirectUri()[0]
-            : $client->getRedirectUri();
+        return is_array($client->get_redirect_uri()) ? $client->get_redirect_uri()[0] : $client->get_redirect_uri();
     }
 }

@@ -7,100 +7,80 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
-
-declare(strict_types=1);
-
-namespace League\OAuth2\Server\Entities\Traits;
+declare (strict_types=1);
+namespace League\O_Auth2\Server\Entities\Traits;
 
 use DateTimeImmutable;
-use League\OAuth2\Server\Entities\ClientEntityInterface;
-use League\OAuth2\Server\Entities\ScopeEntityInterface;
-
-trait DeviceCodeTrait
+use League\O_Auth2\Server\Entities\Client_Entity_Interface;
+use League\O_Auth2\Server\Entities\Scope_Entity_Interface;
+trait Device_Code_Trait
 {
-    private bool $userApproved = false;
-    private bool $includeVerificationUriComplete = false;
+    private bool $user_approved = false;
+    private bool $include_verification_uri_complete = false;
     private int $interval = 5;
-    private string $userCode;
-    private string $verificationUri;
-    private ?DateTimeImmutable $lastPolledAt = null;
-
-    public function getUserCode(): string
+    private string $user_code;
+    private string $verification_uri;
+    private ?DateTimeImmutable $last_polled_at = null;
+    public function get_user_code(): string
     {
-        return $this->userCode;
+        return $this->user_code;
     }
-
-    public function setUserCode(string $userCode): void
+    public function set_user_code(string $user_code): void
     {
-        $this->userCode = $userCode;
+        $this->user_code = $user_code;
     }
-
-    public function getVerificationUri(): string
+    public function get_verification_uri(): string
     {
-        return $this->verificationUri;
+        return $this->verification_uri;
     }
-
-    public function setVerificationUri(string $verificationUri): void
+    public function set_verification_uri(string $verification_uri): void
     {
-        $this->verificationUri = $verificationUri;
+        $this->verification_uri = $verification_uri;
     }
-
-    public function getVerificationUriComplete(): string
+    public function get_verification_uri_complete(): string
     {
-        return $this->verificationUri . '?user_code=' . $this->userCode;
+        return $this->verification_uri . '?user_code=' . $this->user_code;
     }
-
-    abstract public function getClient(): ClientEntityInterface;
-
-    abstract public function getExpiryDateTime(): DateTimeImmutable;
-
+    abstract public function get_client(): Client_Entity_Interface;
+    abstract public function get_expiry_date_time(): DateTimeImmutable;
     /**
      * @return ScopeEntityInterface[]
      */
-    abstract public function getScopes(): array;
-
+    abstract public function get_scopes(): array;
     /**
      * @return non-empty-string
      */
-    abstract public function getIdentifier(): string;
-
-    public function getLastPolledAt(): ?DateTimeImmutable
+    abstract public function get_identifier(): string;
+    public function get_last_polled_at(): ?DateTimeImmutable
     {
-        return $this->lastPolledAt;
+        return $this->last_polled_at;
     }
-
-    public function setLastPolledAt(DateTimeImmutable $lastPolledAt): void
+    public function set_last_polled_at(DateTimeImmutable $last_polled_at): void
     {
-        $this->lastPolledAt = $lastPolledAt;
+        $this->last_polled_at = $last_polled_at;
     }
-
-    public function getInterval(): int
+    public function get_interval(): int
     {
         return $this->interval;
     }
-
-    public function setInterval(int $interval): void
+    public function set_interval(int $interval): void
     {
         $this->interval = $interval;
     }
-
-    public function getUserApproved(): bool
+    public function get_user_approved(): bool
     {
-        return $this->userApproved;
+        return $this->user_approved;
     }
-
-    public function setUserApproved(bool $userApproved): void
+    public function set_user_approved(bool $user_approved): void
     {
-        $this->userApproved = $userApproved;
+        $this->user_approved = $user_approved;
     }
-
-    public function getVerificationUriCompleteInAuthResponse(): bool
+    public function get_verification_uri_complete_in_auth_response(): bool
     {
-        return $this->includeVerificationUriComplete;
+        return $this->include_verification_uri_complete;
     }
-
-    public function setVerificationUriCompleteInAuthResponse(bool $includeVerificationUriComplete): void
+    public function set_verification_uri_complete_in_auth_response(bool $include_verification_uri_complete): void
     {
-        $this->includeVerificationUriComplete = $includeVerificationUriComplete;
+        $this->include_verification_uri_complete = $include_verification_uri_complete;
     }
 }

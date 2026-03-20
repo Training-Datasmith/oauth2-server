@@ -7,14 +7,11 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
+declare (strict_types=1);
+namespace League\O_Auth2\Server\Entities;
 
-declare(strict_types=1);
-
-namespace League\OAuth2\Server\Entities;
-
-interface AuthCodeEntityInterface extends TokenInterface
+interface Auth_Code_Entity_Interface extends Token_Interface
 {
-    public function getRedirectUri(): string|null;
-
-    public function setRedirectUri(string $uri): void;
+    public function get_redirect_uri(): string|null;
+    public function set_redirect_uri(string $uri): void;
 }

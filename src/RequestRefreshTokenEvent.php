@@ -7,31 +7,28 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
+declare (strict_types=1);
+namespace League\O_Auth2\Server;
 
-declare(strict_types=1);
-
-namespace League\OAuth2\Server;
-
-use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use SensitiveParameter;
-
-class RequestRefreshTokenEvent extends RequestEvent
+use League\O_Auth2\Server\Entities\Refresh_Token_Entity_Interface;
+use Psr\Http\Message\Server_Request_Interface;
+use Sensitive_Parameter;
+class Request_Refresh_Token_Event extends Request_Event
 {
     public function __construct(
         string $name,
-        ServerRequestInterface $request,
-        #[SensitiveParameter]
-        private readonly RefreshTokenEntityInterface $refreshToken
-    ) {
+        Server_Request_Interface $request,
+        #[Sensitive_Parameter]
+        private readonly Refresh_Token_Entity_Interface $refresh_token
+    )
+    {
         parent::__construct($name, $request);
     }
-
     /**
      * @codeCoverageIgnore
      */
-    public function getRefreshToken(): RefreshTokenEntityInterface
+    public function get_refresh_token(): Refresh_Token_Entity_Interface
     {
-        return $this->refreshToken;
+        return $this->refresh_token;
     }
 }

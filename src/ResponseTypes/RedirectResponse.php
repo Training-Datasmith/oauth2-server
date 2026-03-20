@@ -9,24 +9,19 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
+declare (strict_types=1);
+namespace League\O_Auth2\Server\Response_Types;
 
-declare(strict_types=1);
-
-namespace League\OAuth2\Server\ResponseTypes;
-
-use Psr\Http\Message\ResponseInterface;
-
-class RedirectResponse extends AbstractResponseType
+use Psr\Http\Message\Response_Interface;
+class Redirect_Response extends Abstract_Response_Type
 {
-    private string $redirectUri;
-
-    public function setRedirectUri(string $redirectUri): void
+    private string $redirect_uri;
+    public function set_redirect_uri(string $redirect_uri): void
     {
-        $this->redirectUri = $redirectUri;
+        $this->redirect_uri = $redirect_uri;
     }
-
-    public function generateHttpResponse(ResponseInterface $response): ResponseInterface
+    public function generate_http_response(Response_Interface $response): Response_Interface
     {
-        return $response->withStatus(302)->withHeader('Location', $this->redirectUri);
+        return $response->with_status(302)->with_header('Location', $this->redirect_uri);
     }
 }

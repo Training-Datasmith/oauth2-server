@@ -7,25 +7,21 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
+declare (strict_types=1);
+namespace League\O_Auth2\Server\Repositories;
 
-declare(strict_types=1);
-
-namespace League\OAuth2\Server\Repositories;
-
-use League\OAuth2\Server\Entities\ClientEntityInterface;
-
+use League\O_Auth2\Server\Entities\Client_Entity_Interface;
 /**
  * Client storage interface.
  */
-interface ClientRepositoryInterface extends RepositoryInterface
+interface Client_Repository_Interface extends Repository_Interface
 {
     /**
      * Get a client.
      */
-    public function getClientEntity(string $clientIdentifier): ?ClientEntityInterface;
-
+    public function get_client_entity(string $client_identifier): ?Client_Entity_Interface;
     /**
      * Validate a client's secret.
      */
-    public function validateClient(string $clientIdentifier, ?string $clientSecret, ?string $grantType): bool;
+    public function validate_client(string $client_identifier, ?string $client_secret, ?string $grant_type): bool;
 }

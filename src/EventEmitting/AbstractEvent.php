@@ -1,44 +1,36 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace League\O_Auth2\Server\Event_Emitting;
 
-namespace League\OAuth2\Server\EventEmitting;
-
-use League\Event\HasEventName;
-use Psr\EventDispatcher\StoppableEventInterface;
-
-class AbstractEvent implements StoppableEventInterface, HasEventName
+use League\Event\Has_Event_Name;
+use Psr\Event_Dispatcher\Stoppable_Event_Interface;
+class Abstract_Event implements Stoppable_Event_Interface, Has_Event_Name
 {
-    private bool $propagationStopped = false;
-
+    private bool $propagation_stopped = false;
     public function __construct(private readonly string $name)
     {
     }
-
-    public function eventName(): string
+    public function event_name(): string
     {
         return $this->name;
     }
-
     /**
      * Backwards compatibility method
      *
      * @deprecated use eventName instead
      */
-    public function getName(): string
+    public function get_name(): string
     {
         return $this->name;
     }
-
-    public function isPropagationStopped(): bool
+    public function is_propagation_stopped(): bool
     {
-        return $this->propagationStopped;
+        return $this->propagation_stopped;
     }
-
-    public function stopPropagation(): self
+    public function stop_propagation(): self
     {
-        $this->propagationStopped = true;
-
+        $this->propagation_stopped = true;
         return $this;
     }
 }

@@ -9,105 +9,71 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
-
-declare(strict_types=1);
-
-namespace League\OAuth2\Server\Grant;
+declare (strict_types=1);
+namespace League\O_Auth2\Server\Grant;
 
 use DateInterval;
-use League\OAuth2\Server\Entities\ClientEntityInterface;
-use League\OAuth2\Server\Entities\UserEntityInterface;
-use League\OAuth2\Server\Exception\OAuthServerException;
-use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
-use League\OAuth2\Server\Repositories\UserRepositoryInterface;
-use League\OAuth2\Server\RequestAccessTokenEvent;
-use League\OAuth2\Server\RequestEvent;
-use League\OAuth2\Server\RequestRefreshTokenEvent;
-use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
-use Psr\Http\Message\ServerRequestInterface;
-
+use League\O_Auth2\Server\Entities\Client_Entity_Interface;
+use League\O_Auth2\Server\Entities\User_Entity_Interface;
+use League\O_Auth2\Server\Exception\O_Auth_Server_Exception;
+use League\O_Auth2\Server\Repositories\Refresh_Token_Repository_Interface;
+use League\O_Auth2\Server\Repositories\User_Repository_Interface;
+use League\O_Auth2\Server\Request_Access_Token_Event;
+use League\O_Auth2\Server\Request_Event;
+use League\O_Auth2\Server\Request_Refresh_Token_Event;
+use League\O_Auth2\Server\Response_Types\Response_Type_Interface;
+use Psr\Http\Message\Server_Request_Interface;
 /**
  * Password grant class.
  */
-class PasswordGrant extends AbstractGrant
+class Password_Grant extends Abstract_Grant
 {
-    public function __construct(
-        UserRepositoryInterface $userRepository,
-        RefreshTokenRepositoryInterface $refreshTokenRepository
-    ) {
-        $this->setUserRepository($userRepository);
-        $this->setRefreshTokenRepository($refreshTokenRepository);
-
-        $this->refreshTokenTTL = new DateInterval('P1M');
+    public function __construct(User_Repository_Interface $user_repository, Refresh_Token_Repository_Interface $refresh_token_repository)
+    {
+        $this->set_user_repository($user_repository);
+        $this->set_refresh_token_repository($refresh_token_repository);
+        $this->refresh_token_ttl = new DateInterval('P1M');
     }
-
     /**
      * {@inheritdoc}
      */
-    public function respondToAccessTokenRequest(
-        ServerRequestInterface $request,
-        ResponseTypeInterface $responseType,
-        DateInterval $accessTokenTTL
-    ): ResponseTypeInterface {
+    public function respond_to_access_token_request(Server_Request_Interface $request, Response_Type_Interface $response_type, DateInterval $access_token_ttl): Response_Type_Interface
+    {
         // Validate request
-        $client = $this->validateClient($request);
-        $scopes = $this->validateScopes($this->getRequestParameter('scope', $request, $this->defaultScope));
-        $user = $this->validateUser($request, $client);
-
-        $finalizedScopes = $this->scopeRepository->finalizeScopes(
-            $scopes,
-            $this->getIdentifier(),
-            $client,
-            $user->getIdentifier()
-        );
-
+        $client = $this->validate_client($request);
+        $scopes = $this->validate_scopes($this->get_request_parameter('scope', $request, $this->default_scope));
+        $user = $this->validate_user($request, $client);
+        $finalized_scopes = $this->scope_repository->finalize_scopes($scopes, $this->get_identifier(), $client, $user->get_identifier());
         // Issue and persist new access token
-        $accessToken = $this->issueAccessToken($accessTokenTTL, $client, $user->getIdentifier(), $finalizedScopes);
-        $this->getEmitter()->emit(new RequestAccessTokenEvent(RequestEvent::ACCESS_TOKEN_ISSUED, $request, $accessToken));
-        $responseType->setAccessToken($accessToken);
-
+        $access_token = $this->issue_access_token($access_token_ttl, $client, $user->get_identifier(), $finalized_scopes);
+        $this->get_emitter()->emit(new Request_Access_Token_Event(Request_Event::ACCESS_TOKEN_ISSUED, $request, $access_token));
+        $response_type->set_access_token($access_token);
         // Issue and persist new refresh token if given
-        $refreshToken = $this->issueRefreshToken($accessToken);
-
-        if ($refreshToken !== null) {
-            $this->getEmitter()->emit(new RequestRefreshTokenEvent(RequestEvent::REFRESH_TOKEN_ISSUED, $request, $refreshToken));
-            $responseType->setRefreshToken($refreshToken);
+        $refresh_token = $this->issue_refresh_token($access_token);
+        if ($refresh_token !== null) {
+            $this->get_emitter()->emit(new Request_Refresh_Token_Event(Request_Event::REFRESH_TOKEN_ISSUED, $request, $refresh_token));
+            $response_type->set_refresh_token($refresh_token);
         }
-
-        return $responseType;
+        return $response_type;
     }
-
     /**
      * @throws OAuthServerException
      */
-    protected function validateUser(ServerRequestInterface $request, ClientEntityInterface $client): UserEntityInterface
+    protected function validate_user(Server_Request_Interface $request, Client_Entity_Interface $client): User_Entity_Interface
     {
-        $username = $this->getRequestParameter('username', $request)
-            ?? throw OAuthServerException::invalidRequest('username');
-
-        $password = $this->getRequestParameter('password', $request)
-            ?? throw OAuthServerException::invalidRequest('password');
-
-        $user = $this->userRepository->getUserEntityByUserCredentials(
-            $username,
-            $password,
-            $this->getIdentifier(),
-            $client
-        );
-
-        if ($user instanceof UserEntityInterface === false) {
-            $this->getEmitter()->emit(new RequestEvent(RequestEvent::USER_AUTHENTICATION_FAILED, $request));
-
-            throw OAuthServerException::invalidCredentials();
+        $username = $this->get_request_parameter('username', $request) ?? throw O_Auth_Server_Exception::invalid_request('username');
+        $password = $this->get_request_parameter('password', $request) ?? throw O_Auth_Server_Exception::invalid_request('password');
+        $user = $this->user_repository->get_user_entity_by_user_credentials($username, $password, $this->get_identifier(), $client);
+        if ($user instanceof User_Entity_Interface === false) {
+            $this->get_emitter()->emit(new Request_Event(Request_Event::USER_AUTHENTICATION_FAILED, $request));
+            throw O_Auth_Server_Exception::invalid_credentials();
         }
-
         return $user;
     }
-
     /**
      * {@inheritdoc}
      */
-    public function getIdentifier(): string
+    public function get_identifier(): string
     {
         return 'password';
     }

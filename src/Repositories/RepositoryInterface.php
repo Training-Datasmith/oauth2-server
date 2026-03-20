@@ -7,14 +7,12 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
-
-declare(strict_types=1);
-
-namespace League\OAuth2\Server\Repositories;
+declare (strict_types=1);
+namespace League\O_Auth2\Server\Repositories;
 
 /**
  * Repository interface.
  */
-interface RepositoryInterface
+interface Repository_Interface
 {
 }

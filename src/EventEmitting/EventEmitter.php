@@ -1,21 +1,17 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace League\O_Auth2\Server\Event_Emitting;
 
-namespace League\OAuth2\Server\EventEmitting;
-
-use League\Event\EventDispatcher;
-use League\Event\ListenerPriority;
-
-final class EventEmitter extends EventDispatcher
+use League\Event\Event_Dispatcher;
+use League\Event\Listener_Priority;
+final class Event_Emitter extends Event_Dispatcher
 {
-    public function addListener(string $event, callable $listener, int $priority = ListenerPriority::NORMAL): self
+    public function add_listener(string $event, callable $listener, int $priority = Listener_Priority::NORMAL): self
     {
-        $this->subscribeTo($event, $listener, $priority);
-
+        $this->subscribe_to($event, $listener, $priority);
         return $this;
     }
-
     public function emit(object $event): object
     {
         return $this->dispatch($event);

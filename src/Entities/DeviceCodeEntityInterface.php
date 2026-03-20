@@ -7,34 +7,21 @@
  *
  * @link        https://github.com/thephpleague/oauth2-server
  */
-
-declare(strict_types=1);
-
-namespace League\OAuth2\Server\Entities;
+declare (strict_types=1);
+namespace League\O_Auth2\Server\Entities;
 
 use DateTimeImmutable;
-
-interface DeviceCodeEntityInterface extends TokenInterface
+interface Device_Code_Entity_Interface extends Token_Interface
 {
-    public function getUserCode(): string;
-
-    public function setUserCode(string $userCode): void;
-
-    public function getVerificationUri(): string;
-
-    public function setVerificationUri(string $verificationUri): void;
-
-    public function getVerificationUriComplete(): string;
-
-    public function getLastPolledAt(): ?DateTimeImmutable;
-
-    public function setLastPolledAt(DateTimeImmutable $lastPolledAt): void;
-
-    public function getInterval(): int;
-
-    public function setInterval(int $interval): void;
-
-    public function getUserApproved(): bool;
-
-    public function setUserApproved(bool $userApproved): void;
+    public function get_user_code(): string;
+    public function set_user_code(string $user_code): void;
+    public function get_verification_uri(): string;
+    public function set_verification_uri(string $verification_uri): void;
+    public function get_verification_uri_complete(): string;
+    public function get_last_polled_at(): ?DateTimeImmutable;
+    public function set_last_polled_at(DateTimeImmutable $last_polled_at): void;
+    public function get_interval(): int;
+    public function set_interval(int $interval): void;
+    public function get_user_approved(): bool;
+    public function set_user_approved(bool $user_approved): void;
 }
