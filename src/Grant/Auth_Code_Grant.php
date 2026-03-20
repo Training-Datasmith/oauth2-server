@@ -68,16 +68,56 @@ class Auth_Code_Grant extends Abstract_Authorize_Grant
         $this->code_challenge_verifiers[$plain_verifier->get_method()] = $plain_verifier;
     }
     /**
-     * Disable the requirement for a code challenge for public clients.
+     * Disables the PKCE code_challenge requirement for public clients.
+     *
+     * By default, public clients (those without a secret) MUST supply a
+     * code_challenge to prevent authorization code interception attacks.
+     * This method disables that requirement.
+     *
+     * @deprecated since 9.0.0 — Disabling PKCE for public clients is strongly
+     *             discouraged.  RFC 9700 (OAuth 2.0 Security BCP) mandates PKCE
+     *             for all clients.  This method will be removed in a future major version.
+     *
+     * @security Disabling PKCE for public clients exposes them to authorization
+     *           code interception attacks (PKCE is the primary defence).  Only
+     *           disable this if you are certain all your public clients are running
+     *           in a secure, non-interceptable environment.
+     *
+     * @return void
      */
     public function disable_require_code_challenge_for_public_clients(): void
     {
+        trigger_error(
+            'Auth_Code_Grant::disable_require_code_challenge_for_public_clients() is deprecated. '
+            . 'PKCE is mandatory for public clients per RFC 9700 (OAuth 2.0 Security BCP).',
+            \E_USER_DEPRECATED
+        );
         $this->require_code_challenge_for_public_clients = false;
     }
     /**
-     * Respond to an access token request.
+     * Handles the token endpoint for the Authorization Code grant.
      *
-     * @throws OAuthServerException
+     * Validates the authorization code, verifies the PKCE code_verifier against
+     * the stored code_challenge, revokes the auth code (preventing replay), issues
+     * a new access token and optionally a refresh token.
+     *
+     * @security Auth codes are single-use: they are revoked immediately after
+     *           validation (line: revoke_auth_code()) to prevent replay attacks.
+     *           The code is encrypted with the Defuse symmetric key, so guessing
+     *           a valid code requires breaking AES-256-CTR + HMAC-SHA256.
+     *
+     * @security PKCE downgrade is explicitly blocked: if a code_verifier is
+     *           present but no code_challenge was stored in the auth code,
+     *           the request is rejected to prevent stripping the code_challenge
+     *           from a crafted authorization request.
+     *
+     * @param Server_Request_Interface  $request          The PSR-7 token request containing the auth code.
+     * @param Response_Type_Interface   $response_type    The response type to populate with the new tokens.
+     * @param DateInterval              $access_token_ttl Lifetime for the issued access token.
+     *
+     * @throws O_Auth_Server_Exception on any validation failure.
+     *
+     * @return Response_Type_Interface The response type populated with access/refresh tokens.
      */
     public function respond_to_access_token_request(Server_Request_Interface $request, Response_Type_Interface $response_type, DateInterval $access_token_ttl): Response_Type_Interface
     {

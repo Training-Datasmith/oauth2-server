@@ -34,6 +34,29 @@ class Crypt_Key implements Crypt_Key_Interface
      */
     protected string $key_contents;
     protected string $key_path;
+    /**
+     * Loads a cryptographic key from a file path, a PEM string, or a file:// URI.
+     *
+     * The constructor validates the key material against OpenSSL and optionally
+     * checks that the key file has appropriately restrictive permissions (Unix only).
+     *
+     * @security Private key files must be readable only by the process owner.
+     *           The recommended file mode is 600 (owner read/write only).  A
+     *           broader mode (e.g., 644, 664) will trigger an E_USER_NOTICE
+     *           warning.  $pass_phrase is annotated #[SensitiveParameter] so it
+     *           is redacted from stack traces.
+     *
+     * @security Only RSA and EC keys are accepted.  DH and DSA keys are rejected
+     *           because they are not appropriate for JWT signing (RS256/ES256).
+     *
+     * @param string      $key_path              File path (with or without file:// prefix),
+     *                                           or a raw PEM string containing the key.
+     * @param string|null $pass_phrase           Passphrase for encrypted private key files; null if unencrypted.
+     * @param bool        $key_permissions_check Whether to warn about insecure file permissions (Unix only).
+     *
+     * @throws \LogicException if the key path is not readable, the file cannot be read,
+     *                         or the key material is invalid.
+     */
     public function __construct(
         string $key_path,
         #[Sensitive_Parameter]

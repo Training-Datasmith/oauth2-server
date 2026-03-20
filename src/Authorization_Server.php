@@ -43,7 +43,21 @@ class Authorization_Server implements Emitter_Aware_Interface
     private string $default_scope = '';
     private bool $revoke_refresh_tokens = true;
     /**
-     * New server instance
+     * Creates a new Authorization_Server instance.
+     *
+     * @security The $private_key is used to sign JWT access tokens (RS256 by
+     *           default).  It must be an RSA or EC private key of at least 2048
+     *           bits.  Both $private_key and $encryption_key are annotated with
+     *           #[SensitiveParameter] so they are redacted from PHP stack traces.
+     *
+     * @param Client_Repository_Interface     $client_repository       Validates client credentials and fetches client entities.
+     * @param Access_Token_Repository_Interface $access_token_repository Persists and revokes access tokens.
+     * @param Scope_Repository_Interface      $scope_repository        Resolves scope identifiers to scope entities.
+     * @param Crypt_Key_Interface|string      $private_key             RSA/EC private key (object or file:// path / PEM string).
+     *                                                                  Key file should have mode 600.
+     * @param string|Key                      $encryption_key          Defuse symmetric key used to encrypt auth codes and
+     *                                                                  refresh tokens stored as opaque strings.
+     * @param Response_Type_Interface|null    $response_type           Custom response type; defaults to Bearer_Token_Response.
      */
     public function __construct(
         private Client_Repository_Interface $client_repository,
@@ -68,7 +82,23 @@ class Authorization_Server implements Emitter_Aware_Interface
         $this->response_type = $response_type;
     }
     /**
-     * Enable a grant type on the server
+     * Enable a grant type on the server.
+     *
+     * Injects all server-level dependencies (repositories, keys, encryption key,
+     * default scope) into the grant type before registering it.
+     *
+     * @security Each grant type receives the private key for JWT signing.  Only
+     *           enable grant types that are appropriate for your application:
+     *           - Disable Implicit and Password grants for new applications (RFC 6749
+     *             recommends against both).
+     *           - Always call Auth_Code_Grant::enable_code_exchange_proof_key() to
+     *             enforce PKCE for public clients.
+     *
+     * @param Grant_Type_Interface  $grant_type       The grant type to register, e.g. Auth_Code_Grant.
+     * @param DateInterval|null     $access_token_ttl How long access tokens issued by this grant are valid.
+     *                                                Defaults to PT1H (1 hour) if null.
+     *
+     * @return void
      */
     public function enable_grant_type(Grant_Type_Interface $grant_type, DateInterval|null $access_token_ttl = null): void
     {
@@ -87,9 +117,24 @@ class Authorization_Server implements Emitter_Aware_Interface
         $this->grant_type_access_token_ttl[$grant_type->get_identifier()] = $access_token_ttl;
     }
     /**
-     * Validate an authorization request
+     * Validates an incoming authorization request and returns a hydrated Authorization_Request.
      *
-     * @throws OAuthServerException
+     * Iterates through enabled grant types and delegates to the first grant that
+     * can respond to the request.  The returned Authorization_Request must be
+     * stored (e.g., in the session) between the initial redirect and the user
+     * approval step.
+     *
+     * @security The state parameter is not validated here; callers MUST validate
+     *           the CSRF state parameter themselves before calling this method to
+     *           prevent cross-site request forgery on the authorization endpoint.
+     *           The redirect_uri is validated against pre-registered URIs by the
+     *           grant type (exact-match comparison).
+     *
+     * @param Server_Request_Interface $request The incoming PSR-7 authorization request.
+     *
+     * @throws O_Auth_Server_Exception with error=unsupported_grant_type if no grant matches.
+     *
+     * @return Authorization_Request_Interface A validated, partially populated authorization request.
      */
     public function validate_authorization_request(Server_Request_Interface $request): Authorization_Request_Interface
     {

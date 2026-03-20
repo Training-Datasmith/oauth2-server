@@ -39,7 +39,22 @@ class Bearer_Token_Validator implements Authorization_Validator_Interface
     {
     }
     /**
-     * Set the public key
+     * Sets the RSA/EC public key used to verify JWT access token signatures.
+     *
+     * This method must be called before validate_authorization().  It also
+     * initialises the lcobucci/jwt configuration with the correct public key
+     * material and the signature algorithm (RS256 via SHA-256).
+     *
+     * @security Only RSA and EC keys are accepted (validated by Crypt_Key).
+     *           Symmetric HS256 tokens are not supported — each resource server
+     *           would then need the shared secret, widening the attack surface.
+     *
+     * @param Crypt_Key_Interface $key  The public key corresponding to the private key
+     *                                  used by the Authorization_Server to sign JWTs.
+     *
+     * @return void
+     *
+     * @throws \RuntimeException if the public key contents are empty
      */
     public function set_public_key(Crypt_Key_Interface $key): void
     {
@@ -61,7 +76,38 @@ class Bearer_Token_Validator implements Authorization_Validator_Interface
         $this->jwt_configuration->set_validation_constraints(new Loose_Valid_At($clock, $this->jwt_valid_at_date_leeway), new Signed_With(new Sha256(), In_Memory::plain_text($public_key_contents, $this->public_key->get_pass_phrase() ?? '')));
     }
     /**
-     * {@inheritdoc}
+     * Validates the Bearer token in the incoming request and injects OAuth claims as request attributes.
+     *
+     * Performs, in order:
+     * 1. Checks for the presence of an Authorization header.
+     * 2. Strips the "Bearer " prefix and ensures the token string is non-empty.
+     * 3. Parses the JWT (lcobucci/jwt parser).
+     * 4. Validates the JWT signature (RS256 with the configured public key) and
+     *    time-based claims (exp, nbf, iat) via LooseValidAt.
+     * 5. Checks that the access token has not been explicitly revoked via the
+     *    Access_Token_Repository.
+     *
+     * On success, the following attributes are added to the request:
+     * - oauth_access_token_id (string) — the JWT jti claim
+     * - oauth_client_id (string)       — the JWT aud[0] claim
+     * - oauth_user_id (string|null)    — the JWT sub claim
+     * - oauth_scopes (array)           — the JWT scopes claim
+     *
+     * @security JWT signature verification uses RS256; any token signed with a
+     *           different algorithm will fail the Signed_With constraint.
+     *           lcobucci/jwt v5 rejects the "alg: none" attack by design.
+     *
+     * @security Clock-skew tolerance ($jwt_valid_at_date_leeway) should be kept
+     *           small (seconds) to limit the window in which expired tokens are
+     *           accepted.
+     *
+     * @param Server_Request_Interface $request  The incoming PSR-7 request carrying the Bearer token.
+     *
+     * @throws O_Auth_Server_Exception with error=access_denied on any validation failure.
+     *
+     * @return Server_Request_Interface The original request enriched with oauth_* attributes.
+     *
+     * @see set_public_key()
      */
     public function validate_authorization(Server_Request_Interface $request): Server_Request_Interface
     {

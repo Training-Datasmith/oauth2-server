@@ -116,9 +116,30 @@ abstract class Abstract_Grant implements Grant_Type_Interface
         $this->revoke_refresh_tokens = $will_revoke;
     }
     /**
-     * Validate the client.
+     * Validates client credentials extracted from the request.
      *
-     * @throws OAuthServerException
+     * Client credentials are read from the HTTP Basic Authorization header
+     * first; if absent, from the request body (client_id + client_secret).
+     * For confidential clients the secret is verified via the repository's
+     * validate_client() method.  An empty client_secret for a confidential
+     * client is rejected immediately.
+     *
+     * @security Both missing and invalid client credentials emit a
+     *           CLIENT_AUTHENTICATION_FAILED event before throwing, enabling
+     *           rate-limiting and alerting without exposing whether the client_id
+     *           itself exists (invalid_client is used for both cases).
+     *
+     * @security Confidential client secrets are never logged or returned to
+     *           callers.  The repository receives the raw secret for comparison;
+     *           repositories MUST hash-compare secrets (e.g., password_verify)
+     *           rather than storing them in plaintext.
+     *
+     * @param Server_Request_Interface $request  The PSR-7 token request.
+     *
+     * @throws O_Auth_Server_Exception with error=invalid_request if client_id is missing.
+     * @throws O_Auth_Server_Exception with error=invalid_client if credentials are invalid.
+     *
+     * @return Client_Entity_Interface The validated client entity.
      */
     protected function validate_client(Server_Request_Interface $request): Client_Entity_Interface
     {
@@ -429,11 +450,26 @@ abstract class Abstract_Grant implements Grant_Type_Interface
         return $refresh_token;
     }
     /**
-     * Generate a new unique identifier.
+     * Generates a cryptographically random token identifier.
      *
-     * @return non-empty-string
+     * Uses random_bytes() as the entropy source (CSPRNG), then hex-encodes the
+     * result.  The default $length of 40 bytes produces an 80-character hex string,
+     * providing 320 bits of entropy — well above the 128-bit minimum recommended
+     * for token identifiers.
      *
-     * @throws OAuthServerException
+     * @security Do NOT reduce $length below 16 bytes (128 bits).  Shorter
+     *           identifiers are vulnerable to brute-force enumeration of token
+     *           databases.
+     *
+     * @security The identifier is used as the JWT jti claim and as the lookup key
+     *           in the token repository.  It must be unpredictable and unique.
+     *
+     * @param int $length  Number of random bytes before hex encoding (default: 40 → 80 hex chars).
+     *                     Must be ≥ 1.
+     *
+     * @return non-empty-string  The hex-encoded random identifier.
+     *
+     * @throws O_Auth_Server_Exception with error=server_error if the CSPRNG fails.
      */
     protected function generate_unique_identifier(int $length = 40): string
     {
